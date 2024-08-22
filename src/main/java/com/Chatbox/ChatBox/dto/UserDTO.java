@@ -8,17 +8,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDTO {
-    @NotBlank(message = "Username is mandatory")
+
     private String userName;
 
-    @NotBlank(message = "Email is mandatory")
-    @Email(message = "Email should be valid")
     private String userEmail;
 
-    @NotBlank(message = "Password is mandatory")
+
     private String password;
 
-    @NotBlank(message = "Confirm password is mandatory")
+
     private String confirmPassword;
 
     public UserDTO() {

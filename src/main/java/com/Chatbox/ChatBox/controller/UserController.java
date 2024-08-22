@@ -1,6 +1,7 @@
 package com.Chatbox.ChatBox.controller;
 
 import com.Chatbox.ChatBox.dto.ApiResponse;
+import com.Chatbox.ChatBox.dto.LoginDTO;
 import com.Chatbox.ChatBox.dto.UserDTO;
 import com.Chatbox.ChatBox.model.Users;
 import com.Chatbox.ChatBox.service.UserService;
@@ -33,6 +34,17 @@ public class UserController {
         } catch (Exception e) {
             ApiResponse<UserDTO> response = new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<UserDTO>> loginUser(@RequestBody @Validated LoginDTO loginDTO) {
+        try {
+            UserDTO loggedInUser = userService.loginUser(loginDTO);
+            ApiResponse<UserDTO> response = new ApiResponse<>(HttpStatus.OK.value(), "Login successful", loggedInUser);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponse<UserDTO> response = new ApiResponse<>(HttpStatus.UNAUTHORIZED.value(), e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.Chatbox.ChatBox.service;
 
 import com.Chatbox.ChatBox.controller.UserController;
+import com.Chatbox.ChatBox.dto.LoginDTO;
 import com.Chatbox.ChatBox.dto.UserDTO;
 import com.Chatbox.ChatBox.model.Users;
 import com.Chatbox.ChatBox.repository.UserRepository;
@@ -34,6 +35,22 @@ public class UserService {
 
         Users savedUser = userRepository.save(user);
         return new UserDTO(savedUser.getUserId(), savedUser.getUserName(), savedUser.getUserEmail(), null);
+    }
+
+    public UserDTO loginUser(LoginDTO loginDTO) throws Exception {
+        Optional<Users> userOptional = userRepository.findByUserEmail(loginDTO.getUserEmail());
+
+        if (userOptional.isEmpty()) {
+            throw new Exception("Invalid email or password");
+        }
+
+        Users user = userOptional.get();
+
+        if (!user.getPassword().equals(loginDTO.getPassword())) {
+            throw new Exception("Invalid email or password");
+        }
+
+        return new UserDTO(user.getUserId(), user.getUserName(), user.getUserEmail(), null);
     }
     }
 
