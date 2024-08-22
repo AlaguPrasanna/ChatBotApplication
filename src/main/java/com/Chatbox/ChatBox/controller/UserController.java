@@ -1,7 +1,10 @@
 package com.Chatbox.ChatBox.controller;
 
+import com.Chatbox.ChatBox.dto.ApiResponse;
+import com.Chatbox.ChatBox.dto.UserDTO;
 import com.Chatbox.ChatBox.model.Users;
 import com.Chatbox.ChatBox.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +23,16 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/signUp")
-    public ResponseEntity<String> createUser(@RequestBody Users user)
+    @Validated
+    public ResponseEntity<ApiResponse<UserDTO>> createUser(@RequestBody @Validated UserDTO userDTO)
     {
-        try
-        {
-            userService.createUser(user);
-            return ResponseEntity.ok("User registered successfully");
-        }
-        catch (Exception e)
-        {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        try {
+            UserDTO createdUser = userService.createUser(userDTO);
+            ApiResponse<UserDTO> response = new ApiResponse<>(HttpStatus.OK.value(), "User registered successfully", createdUser);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ApiResponse<UserDTO> response = new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 
