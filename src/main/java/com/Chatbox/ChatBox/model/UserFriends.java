@@ -21,11 +21,11 @@ public class UserFriends {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users userId;
+    private Users user;
 
     @ManyToOne
     @JoinColumn(name = "friend_id")
-    private Friends friendId;
+    private Friends friend;
 
     private LocalDateTime userFriendCreatedAt;
     private LocalDateTime userFriendUpdatedAt;
